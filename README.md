@@ -1,5 +1,7 @@
 # NHN_guestBook
 
+NHN ROOKIE:19 심지수
+
 개발 환경
 - git
 - 자바스크립트 모듈 : jQuery 정도만 사용
