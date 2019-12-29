@@ -1,5 +1,6 @@
 package book.vo;
 
+import java.sql.Time;
 import java.util.Date;
 
 public class BookData {
@@ -9,6 +10,8 @@ public class BookData {
 	protected String g_text;
 	protected Date createdDate;
 	protected Date modifiedDate;
+	protected Time createdTime;
+	protected Time modifiedTime;
 
 	public int getNo() {
 		return no;
@@ -61,6 +64,24 @@ public class BookData {
 	
 	public BookData setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
+		return this;
+	}
+	
+	public Time getCreatedTime() {
+		return createdTime;
+	}
+	
+	public BookData setcreatedTime(Time createdTime) {
+		this.createdTime = createdTime;
+		return this;
+	}
+	
+	public Time getModifiedTime() {
+		return modifiedTime;
+	}
+	
+	public BookData setModifiedTime(Time modifiedDate) {
+		this.modifiedTime = modifiedDate;
 		return this;
 	}
 }

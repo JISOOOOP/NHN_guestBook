@@ -12,7 +12,10 @@
 <c:forEach var="bookData" items="${bookDataList}">
 ${bookData.no}.  
 ${bookData.email}:
-${bookData.text}<br>
+${bookData.text}
+${bookData.modifiedDate}
+${bookData.modifiedTime}
+<br>
 </c:forEach>
 <form action='list' method='post'>
 이메일 : <input type='text' name='email'>

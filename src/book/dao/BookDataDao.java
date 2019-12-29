@@ -38,7 +38,8 @@ public class BookDataDao {
 							.setNo(rs.getInt("BNO"))
 							.setEmail(rs.getString("EMAIL"))
 							.setText(rs.getString("TXT"))
-							.setCreatedDate(rs.getDate("MOD_DATE")));
+							.setModifiedDate(rs.getDate("MOD_DATE"))
+							.setModifiedTime(rs.getTime("MOD_DATE")));
 			}
 			
 			return bookDataList;
