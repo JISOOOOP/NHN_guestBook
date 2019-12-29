@@ -29,7 +29,7 @@ public class BookDataDao {
 			rs = stmt.executeQuery(
 					"select BNO,EMAIL,TXT,MOD_DATE"
 					+ " from BOOKDATALIST"
-					+ " order by MOD_DATE ASC");
+					+ " order by MOD_DATE DESC");
 			
 			ArrayList<BookData> bookDataList = new ArrayList<BookData>();
 			
