@@ -13,6 +13,7 @@
 ${bookData.email}:
 ${bookData.text}
 ${bookData.modifiedDate}
+${bookData.modifiedTime}
 <a href='modify?no=${bookData.no}'>[수정]</a>
 <br>
 </c:forEach>
