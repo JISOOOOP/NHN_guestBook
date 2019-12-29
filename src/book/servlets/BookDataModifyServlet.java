@@ -13,28 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 import book.dao.BookDataDao;
 import book.vo.BookData;
 
-@WebServlet("/book/list")
-public class BookDataListServlet extends HttpServlet {
+@WebServlet("/book/modify")
+public class BookDataModifyServlet extends HttpServlet{
 	
 	@Override
 	public void doGet(
 			HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{		
+			throws ServletException, IOException{
 		try {
-			ServletContext sc = this.getServletContext();
+			ServletContext sc = request.getServletContext();
 			
 			BookDataDao bookDataDao = (BookDataDao)sc.getAttribute("bookDataDao");
+			BookData bookData = bookDataDao.selectOne(Integer.parseInt(request.getParameter("no")));
+			request.setAttribute("bookData", bookData);
 			
-			request.setAttribute("bookDataList", bookDataDao.selectList());
-			
-			response.setContentType("text/html; charset=UTF-8");
-			
-			// JSP 출력 위임
-			RequestDispatcher rd = request.getRequestDispatcher("/bookData/BookDataList.jsp");
+			response.setContentType("text/html; charset=utf-8");
+			RequestDispatcher rd = request.getRequestDispatcher("/bookData/BookDataModify.jsp");
 			rd.include(request, response);
 			
 		} catch (Exception e) {
-			// throw new ServletException(e);
+			e.printStackTrace();
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
@@ -49,27 +47,27 @@ public class BookDataListServlet extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		try {
-			ServletContext sc = this.getServletContext();
+			ServletContext sc = request.getServletContext();
 			
 			BookDataDao bookDataDao = (BookDataDao)sc.getAttribute("bookDataDao");
 			
-			BookData bookData = new BookData()
-									.setEmail(request.getParameter("email"))
-									.setPassword(request.getParameter("password"))
-									.setText(request.getParameter("text"));
-			bookDataDao.insert(bookData);
+			// Password check
+			BookData bookData = bookDataDao.exist(request.getParameter("email"), request.getParameter("password"));
+			bookData.setText(request.getParameter("text"));
+			if(bookData != null) {
+				bookDataDao.update(bookData);
+			} else {
+				throw new Exception("비밀번호가 맞지 않습니다.");
+			}
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/auth/Success.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("list");
 			
 		} catch (Exception e) {
-			// throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 			
 		} finally {
 			
 		}
 	}
+
 }

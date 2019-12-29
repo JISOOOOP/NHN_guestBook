@@ -76,5 +76,95 @@ public class BookDataDao {
 			try {if(connection != null) {connection.close();}} catch (Exception e) {}
 		}
 	}
+	
+	public BookData selectOne(int no) throws Exception {
+		// 게시글 조회
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			connection = ds.getConnection();
+			stmt = connection.prepareStatement(
+					"SELECT EMAIL,PWD,TXT FROM BOOKDATALIST"
+					+ " WHERE BNO=?");
+			stmt.setInt(1, no);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				BookData bookData = new BookData()
+												.setEmail(rs.getString("EMAIL"))
+												.setPassword(rs.getString("PWD"))
+												.setText(rs.getString("TXT"));
+				return bookData;
+			} else {
+				throw new Exception("해당 게시글을 찾을 수 없습니다");
+			}
+			
+		} catch (Exception e) {
+			throw e;
+			
+		} finally {
+			try {if(rs != null) {rs.close();}} catch (Exception e) {}
+			try {if(stmt != null) {stmt.close();}} catch (Exception e) {}
+			try {if(connection != null) {connection.close();}} catch (Exception e) {}
+		}
+	}
 
+	public int update(BookData bookData) throws Exception {
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			connection = ds.getConnection();
+			stmt = connection.prepareStatement(
+					"UPDATE BOOKDATALIST SET TXT=?,MOD_DATE=now()"
+					+ " WHERE BNO=?");
+			stmt.setString(1, bookData.getText());
+			stmt.setInt(2, bookData.getNo());
+			return stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw e;
+			
+		} finally {
+			try {if(stmt != null) {stmt.close();}} catch (Exception e) {}
+			try {if(connection != null) {connection.close();}} catch (Exception e) {}
+		}
+	}
+	
+	public BookData exist(String email, String password) throws Exception {
+		// 있으면 BookData return, 없으면 null return
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			connection = ds.getConnection();
+			stmt = connection.prepareStatement(
+					"select BNO,EMAIL,TXT from BOOKDATALIST"
+					+ " WHERE EMAIL=? AND PWD=?");
+			stmt.setString(1, email);
+			stmt.setString(2, password);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				return new BookData().setNo(rs.getInt("BNO"))
+									.setEmail(rs.getString("EMAIL"))
+									.setText(rs.getString("TXT"));
+			}
+			else {
+				return null;
+			}
+			
+		} catch (Exception e) {
+			throw e;
+			
+		} finally {
+			try {if(rs != null) {rs.close();}} catch (Exception e) {}
+			try {if(stmt != null) {stmt.close();}} catch (Exception e) {}
+			try {if(connection != null) {connection.close();}} catch (Exception e) {}
+		}
+	}
+	
 }

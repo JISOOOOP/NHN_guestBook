@@ -7,7 +7,7 @@ public class BookData {
 	protected int no;
 	protected String email;
 	protected String password;
-	protected String g_text;
+	protected String text;
 	protected Date createdDate;
 	protected Date modifiedDate;
 	protected Time createdTime;
@@ -32,7 +32,7 @@ public class BookData {
 	}
 	
 	public String getPassword() {
-		return email;
+		return password;
 	}
 	
 	public BookData setPassword(String password) {
@@ -41,11 +41,11 @@ public class BookData {
 	}
 	
 	public String getText() {
-		return g_text;
+		return text;
 	}
 	
-	public BookData setText(String g_text) {
-		this.g_text = g_text;
+	public BookData setText(String text) {
+		this.text = text;
 		return this;
 	}
 	
