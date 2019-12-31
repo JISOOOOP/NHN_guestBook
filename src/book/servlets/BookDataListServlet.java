@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import book.dao.BookDataDao;
+import book.util.EmailCheck;
 import book.vo.BookData;
 
 @WebServlet("/book/list")
@@ -52,15 +53,18 @@ public class BookDataListServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			
 			BookDataDao bookDataDao = (BookDataDao)sc.getAttribute("bookDataDao");
-			
 			BookData bookData = new BookData()
 									.setEmail(request.getParameter("email"))
 									.setPassword(request.getParameter("password"))
 									.setText(request.getParameter("text"));
-			bookDataDao.insert(bookData);
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/auth/Success.jsp");
-			rd.forward(request, response);
+			if(EmailCheck.checkEmail(bookData.getEmail())) {
+				bookDataDao.insert(bookData);
+				RequestDispatcher rd = request.getRequestDispatcher("/auth/Success.jsp");
+				rd.forward(request, response);
+			}
+			else {
+				response.sendRedirect("list");
+			}
 			
 		} catch (Exception e) {
 			// throw new ServletException(e);
